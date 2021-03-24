@@ -32,8 +32,10 @@ type ResultStruct struct {
 }
 
 func mDelete(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var bodyRequest map[string]interface{}
+	json.Unmarshal(reqBody, &bodyRequest)
+	id := bodyRequest["id"].(string)
 
 	respondWithJSON(w, http.StatusOK, ResultStruct{Id: id})
 }
